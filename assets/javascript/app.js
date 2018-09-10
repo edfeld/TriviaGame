@@ -2,11 +2,8 @@
 
 // This code will run as soon as the page loads
 window.onload = function() {
-    // $("#lap").on("click", stopwatch.recordLap);
     $("#stop").on("click", stopwatch.stop);
     $("#reset").on("click", triviaGame.reset);
-    // $("#start").on("click", stopwatch.start);
-    $(".list-group-item").on("click", triviaGame.processGuess);
   };
 
 
@@ -30,20 +27,21 @@ let triviaGame = {
             questionNumber: 2,
             questionText: "Who played the hands of the Swedish Chef?",
             answers:  ["Jim Henson", "Walter Matheau", "Frank Oz"],
-            correctAnswer: "Fank Oz",
+            correctAnswer: "Frank Oz",
         },
         { 
             questionNumber: 3,
-            questionText: "Who played Long John Siver in 'Muppets Treasure Island'?",
+            questionText: "Who played Long John Silver in 'Muppets Treasure Island'?",
             answers:  ["Michael Caine", "Tim Curry", "John Cleese"],
             correctAnswer: "Tim Curry",
         },
         { 
             questionNumber: 4,
             questionText: "What is the name of Kermit's nephew?",
-            answers:  ["Robin", "Ajay", "Nevin"],
+            answers:  ["Robin", "Ajay", "Nevin", "Scooter"],
             correctAnswer: "Robin",
         }
+
     ],
 
     isGameStarted: false,
@@ -51,7 +49,85 @@ let triviaGame = {
     losses: 0,
     QuestionIndex: 0,
     arrQuestionSize: 0,
+    delayHide: 0, 
 
+    endGame: function() {
+        // load "Game over" into the div
+        $("#triviaQuestion").text("  Your game is over.");
+        // load the question number. 
+        $(".question-number").text("");
+        // load the period and space into the span
+        $("#periodSpace").text("");
+        let correctAnswers = "Correct answers: " + triviaGame.wins;
+        let incorrectAnswers = "Incorrect answers: " + triviaGame.losses;
+        let listItm1 = $("<li>");
+        listItm1.addClass("list-group-item");
+        listItm1.text(correctAnswers);
+        $("#answerList").append(listItm1);
+
+        let listItm2 = $("<li>");
+        listItm2.addClass("list-group-item");
+        listItm2.text(incorrectAnswers);
+        $("#answerList").append(listItm2)
+
+        $("#reset").removeClass("invisible");
+        console.log("108. End of game!!")
+        console.log("wins: " + triviaGame.wins);
+        console.log("losses:  " + triviaGame.losses);
+            
+    },
+
+    loadQuestionSet: function (element) {
+        // empty the answer list 
+        $("#answerList").empty();
+        if ( element < triviaGame.arrQuestionSize ) { 
+            if(clockRunning) {
+                stopwatch.stop();
+                stopwatch.start();
+            } else {
+                stopwatch.start();
+            }
+           
+            // load the question into the div
+            $("#triviaQuestion").text(triviaGame.arrQuestion[element].questionText);
+            // load the question number. 
+            $(".question-number").text(element + 1);
+            // load the period and space into the span
+            $("#periodSpace").text(". ");
+            
+            let qAnswers = triviaGame.arrQuestion[element].answers; 
+
+            // Append List item answers to the list 
+            for(i=0; i < qAnswers.length; i++ ) {
+                let ListItemQuest = $("<li>");
+                ListItemQuest.addClass("list-group-item");
+                ListItemQuest.text(qAnswers[i]);
+                ListItemQuest.on("click", triviaGame.processGuess)
+                $("#answerList").append(ListItemQuest);
+            }
+        
+        
+        } else {
+            triviaGame.endGame();
+            
+        }
+           
+    },
+
+    popModal: function( isHappy, correctAnswer) {
+
+        if (isHappy){
+            $('#HappyModalCenter').modal('show');
+            cdelayHide = setTimeout(function() { $('#HappyModalCenter').modal('hide'); }, 5000);
+        } else {
+            $("#UnhappyModalCenterTitle").text("Incorrect!! The right answer is " + correctAnswer + ".");
+            $('#UnhappyModalCenter').modal('show');
+            triviaGame.delayHide = setTimeout(function() { $('#UnhappyModalCenter').modal('hide'); }, 5000);
+        }
+        
+    },
+
+    
     reset: function() {
         triviaGame.wins = 0;
         triviaGame.losses = 0;
@@ -59,94 +135,68 @@ let triviaGame = {
         triviaGame.arrQuestionSize = Object.keys(triviaGame.arrQuestion).length;
         console.log("44. QuestionIndex: " + triviaGame.QuestionIndex)
         console.log("45. arrQuestion size: " + triviaGame.arrQuestionSize);
-        if ( beginAgain ) {
+        // if ( beginAgain ) {
             triviaGame.QuestionIndex = 0;
-        }
+        // }
         // at the first question element - load the question set into the card
         if ( triviaGame.QuestionIndex < triviaGame.arrQuestionSize ) { 
             triviaGame.loadQuestionSet(triviaGame.QuestionIndex++); // Post increment
+            $("#reset").addClass("invisible"); // disable the start button. 
         }
-             // start the timer method
-             if (clockRunning) {
-                 stopwatch.stop();
-             }
-             stopwatch.start();
-            
-        // onclick events in the answers list should interrupt the 
 
-    },
-
-    loadQuestionSet: function (element) {
-
-        $("#answerList").empty();
-        // load the question into the div
-        $("#triviaQuestion").text(triviaGame.arrQuestion[element].questionText);
-
-        $(".question-number").text(element + 1);
         
-        let qAnswers = triviaGame.arrQuestion[element].answers; 
-
-        // Append List item answers to the list 
-        for(i=0; i < qAnswers.length; i++ ) {
-            let ListItemQuest = $("<li>");
-            ListItemQuest.addClass("list-group-item");
-            ListItemQuest.text(qAnswers[i]);
-            ListItemQuest.on("click", triviaGame.processGuess)
-            $("#answerList").append(ListItemQuest);
-        }
-            
     },
 
-    // findIndexbyQuestNum: function( questionNum) {
-    //     triviaGame.arrQuestion.forEach(element => {
-    //         if( triviaGame.arrQuestion[element].questionNumber === questionNum) { 
-    //             return element; 
-    //         }
-    //         return -1;
-    // });
+    timeOutPopModal: function( correctAnswer) {
 
-    // },
+            $("#UnhappyModalCenterTitle").text("Time's up!!   The correct answer is " + correctAnswer + ".");
+            $('#UnhappyModalCenter').modal('show');
+            let delayHide = setTimeout(function() { $('#UnhappyModalCenter').modal('hide'); }, 5000);
+        
+    },
+
+    
+    getCorrectAnswer(){
+        let questionNum = parseInt($(".question-number").text(),10);
+        questionNum--; 
+        return triviaGame.arrQuestion[questionNum].correctAnswer;
+    },
+
     processGuess: function(){
         // Get the question number from the window
         let answerSelected = $(this).text();
+        stopwatch.stop();
         console.log("148 Answer Selected: " +answerSelected);
-
         let questionNum = parseInt($(".question-number").text(),10);
         questionNum--;  // decrement to get the arr index value. 
         
         // ToDo: Validate whether the correct answer is guessed 
         if (triviaGame.arrQuestion[questionNum].correctAnswer === answerSelected) {
-            
+            triviaGame.popModal(true);
             triviaGame.wins++;
             console.log("Correct answer!! Wins: " + triviaGame.wins);
         } else {
+            triviaGame.popModal(false, triviaGame.arrQuestion[questionNum].correctAnswer);
             triviaGame.losses++;
-            console.log("Incorrect answer!! Loses: " + triviaGame.losses);
+            console.log("Incorrect answer!! Losses: " + triviaGame.losses);
         }
-        stopwatch.stop();
-        if (triviaGame.QuestionIndex < triviaGame.arrQuestionSize) {
-            stopwatch.start();
-            triviaGame.loadQuestionSet(triviaGame.QuestionIndex++); // Post increment
-        } else {
-            console.log("129. game over");
-            console.log("wins: " + triviaGame.wins);
-            console.log("losses:  " + triviaGame.losses);
-        }
-
         
+        triviaGame.loadQuestionSet(triviaGame.QuestionIndex++); // Post increment
+ 
     }
-
+      
 }
 
 var stopwatch = {
 
     time: 0,
+    timeLimit: 21,
 
     start: function() {
   
       // DONE: Use setInterval to start the count here and set the clock to running.
       if (!clockRunning) {
-        stopwatch.time= 31;
+        stopwatch.time= this.timeLimit;
         intervalId = setInterval(stopwatch.count, 1000);
         clockRunning = true;
       }
@@ -158,26 +208,19 @@ var stopwatch = {
       clearInterval(intervalId);
       clockRunning = false;
     },
-    // recordLap: function() {
-  
-    //   // DONE: Get the current time, pass that into the stopwatch.timeConverter function,
-    //   //       and save the result in a variable.
-    //   var converted = stopwatch.timeConverter(stopwatch.time);
-  
-    //   // DONE: Add the current lap and time to the "laps" div.
-    //   $("#laps").append("<p>Lap " + stopwatch.lap + " : " + converted + "</p>");
-  
-    //   // DONE: Increment lap by 1. Remember, we can't use "this" here.
-    //   stopwatch.lap++;
-    // },
+    
     count: function() {
   
       // DONE: increment time by 1, remember we cant use "this" here.
       stopwatch.time--;
         
       if (stopwatch.time <= 0) {
-          stopwatch.stop();
-          alert("Time's up for this question!")
+        stopwatch.stop();
+        triviaGame.losses++;
+        triviaGame.timeOutPopModal( triviaGame.getCorrectAnswer());
+        console.log("170. question not answered in time.  Loses: " + triviaGame.losses);   
+        triviaGame.loadQuestionSet(triviaGame.QuestionIndex++); // Post increment
+
       }
       // DONE: Get the current time, pass that into the stopwatch.timeConverter function,
       //       and save the result in a variable.

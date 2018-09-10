@@ -1,0 +1,14 @@
+/* Styles for Muppets Trivia Game*/
+body {
+    /* background-image: url("../images/Red-Curtain-Background.jpg"); */
+    background-image: url("../images/curtain_07.jpg");
+    /* background-repeat: repeat; */
+}
+
+#main-card {
+    height: 500px;
+}
+
+#stop {
+    background-color: transparent;
+}
