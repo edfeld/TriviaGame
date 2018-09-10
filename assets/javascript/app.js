@@ -120,7 +120,7 @@ let triviaGame = {
             $('#HappyModalCenter').modal('show');
             cdelayHide = setTimeout(function() { $('#HappyModalCenter').modal('hide'); }, 5000);
         } else {
-            $("#UnhappyModalCenterTitle").text("Incorrect!! The right answer is " + correctAnswer + ".");
+            $("#UnhappyModalCenterTitle").text("Incorrect!! The correct answer is " + correctAnswer + ".");
             $('#UnhappyModalCenter').modal('show');
             triviaGame.delayHide = setTimeout(function() { $('#UnhappyModalCenter').modal('hide'); }, 5000);
         }
