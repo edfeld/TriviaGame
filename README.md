@@ -1,7 +1,7 @@
 
 # TriviaGame
 
-Timed Trivia questions about the Muppets.
+A timed trivia game featuring questions about the Muppets.
 
 Click the start button to initialize the game.  
 
