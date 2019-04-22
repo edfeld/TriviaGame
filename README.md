@@ -1,6 +1,8 @@
 
 # TriviaGame
 
+![TriviaGame_Large](https://user-images.githubusercontent.com/18557337/56516678-f6acec80-64ef-11e9-9767-6351b894444b.png)
+
 ## TriviaGame is a timed trivia game written with the following technologies
 
 - HTML
