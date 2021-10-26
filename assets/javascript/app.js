@@ -128,7 +128,7 @@ let triviaGame = {
             $('#HappyModalCenter').modal({ keyboard: false}); 
             console.log("118. Pop Happy Modal."); 
             $(".list-group-item").attr("item-disabled", "t"); // this is used to disable clicks
-            // Use a timeout function to display the modal
+            // Use a timeout function to stop diplaying the modal
             triviaGame.delayHideModal = setTimeout(function() { 
                 $('#HappyModalCenter').modal('hide'); 
                 console.log("122. Happy Modal closed.");
@@ -140,7 +140,7 @@ let triviaGame = {
             $('#UnhappyModalCenter').modal({ keyboard: false});
             console.log("125. Pop Unhapy modal"); 
             $(".list-group-item").attr("item-disabled", "t"); // this is used to disable clicks
-            // Use a timeout function to display the modal
+            // Use a timeout function to hide the modal
             triviaGame.delayHideModal = setTimeout(function() { 
                 $('#UnhappyModalCenter').modal('hide'); 
                 console.log("128. Unhappy Modal closed."); 
