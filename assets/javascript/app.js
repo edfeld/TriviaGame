@@ -16,37 +16,37 @@ let triviaGame = {
             questionNumber: 1,
             questionText: "Animal, the Muppet drummer, was inspired which famous drummer?",
             answers:  ["Keith Moon", "Ringo Starr", "Buddy Rich", "Neil Peart"],
-            correctAnswer: "Keith Moon",
+            correctAnswer: "Keith Moon"
         },
         { 
             questionNumber: 2,
             questionText: "Who played the hands of the Swedish Chef?",
             answers:  ["Jim Henson", "Walter Matheau", "Frank Oz"],
-            correctAnswer: "Frank Oz",
+            correctAnswer: "Frank Oz"
         },
         { 
             questionNumber: 3,
             questionText: "Who played Long John Silver in 'Muppets Treasure Island'?",
             answers:  ["Michael Caine", "Tim Curry", "John Cleese"],
-            correctAnswer: "Tim Curry",
+            correctAnswer: "Tim Curry"
         },
         { 
             questionNumber: 4,
             questionText: "What is the name of Kermit's nephew?",
             answers:  ["Robin", "Ajay", "Nevin", "Scooter"],
-            correctAnswer: "Robin",
+            correctAnswer: "Robin"
         },
         { 
             questionNumber: 5,
             questionText: "What role did Miss Piggy play in 'Muppets Treasure Island'?",
             answers:  ["The Inkeeper", "Mrs. Hawkins", "Mrs. Trelawney", "Benjamina Gunn"],
-            correctAnswer: "Benjamina Gunn",
+            correctAnswer: "Benjamina Gunn"
         },
         { 
             questionNumber: 6,
             questionText: "Dr. Teeth was the leader of the band call what?",
             answers:  ["Electric Shuffle", "Electric Company", "Electric Mayhem", "Electric Funk"],
-            correctAnswer: "Electric Mayhem",
+            correctAnswer: "Electric Mayhem"
         }
 
     ],
